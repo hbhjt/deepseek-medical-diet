@@ -1,0 +1,5 @@
+# 配置模板，使用时复制为config.properties并填入实际值
+key=YOUR_API_KEY_HERE
+url=https://api.deepseek.com/chat/completions
+
+# 其他注释保持不变
