@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.HealthProfileMapper">
+    <insert id="insertHealthProfile" parameterType="com.pojo.HealthProfile">
+        INSERT INTO health_profile (
+        user_id, symptoms, gender, age,
+        blood_pressure, blood_sugar, diseases
+        ) VALUES (
+        #{userId}, #{symptoms}, #{gender}, #{age},
+        #{bloodPressure}, #{bloodSugar}, #{diseases}
+        )
+    </insert>
+
+</mapper>
