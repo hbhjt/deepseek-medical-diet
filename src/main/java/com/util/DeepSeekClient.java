@@ -109,23 +109,27 @@ public class DeepSeekClient {
     /**
      * 构建AI提示词
      */
+    // 在DeepSeekClient的buildPrompt方法中更新提示词
     private String buildPrompt(UserHealthInfo userInfo) {
         return String.format("""
-            请根据以下用户健康信息，推荐1款适合的药膳：
-            症状：%s
-            性别：%s
-            年龄：%s
-            其他状况：%s
+        请根据以下用户健康信息，推荐1款适合的药膳：
+        症状：%s
+        性别：%s
+        年龄：%s
+        其他状况：%s
 
-            要求：
-            1. 必须返回纯JSON格式数据（无任何前置/后置文本），包含以下字段：
-               - name: 药膳名称（字符串）
-               - ingredients: 制作成分（数组，如["芹菜200g", "红枣5颗"]）
-               - steps: 制作步骤（数组，如["步骤1...", "步骤2..."]）
-               - reason: 适合原因（字符串，说明与症状的关联）
-            2. 所有字段不可为null，内容简洁准确，用中文描述。
-            3. 禁止返回任何非JSON内容（如解释、备注）。
-            """,
+        要求：
+        1. 必须返回纯JSON格式数据（无任何前置/后置文本），包含以下字段：
+           - name: 药膳名称（字符串）
+           - ingredients: 制作成分（数组，如["芹菜200g", "红枣5颗"]）
+           - steps: 制作步骤（数组，如["步骤1...", "步骤2..."]）
+           - reason: 适合原因（字符串，说明与症状的关联，对应功效）
+           - taboo: 禁忌说明（字符串，如"孕妇慎用"）
+           - suitableTime: 适宜食用时间（字符串，如"早餐"、"晚餐"）
+           - tags: 标签列表（数组，如["健脾", "益气"]）
+        2. 所有字段不可为null，内容简洁准确，用中文描述。
+        3. 禁止返回任何非JSON内容（如解释、备注）。
+        """,
                 userInfo.getSymptom(),
                 userInfo.getGender(),
                 userInfo.getAge() > 0 ? userInfo.getAge() : "未提供",
@@ -262,9 +266,22 @@ public class DeepSeekClient {
         private List<String> steps;   // 制作步骤
         private String reason;        // 适合原因
 
+        // 新增字段
+        private String taboo;         // 禁忌说明
+        private String suitableTime;  // 适宜食用时间
+        private List<String> tags;    // 标签列表
         // 无参构造（Gson解析必需）
         public MedicinalDiet() {}
 
+        // 新增字段的Getter和Setter
+        public String getTaboo() { return taboo; }
+        public void setTaboo(String taboo) { this.taboo = taboo; }
+
+        public String getSuitableTime() { return suitableTime; }
+        public void setSuitableTime(String suitableTime) { this.suitableTime = suitableTime; }
+
+        public List<String> getTags() { return tags; }
+        public void setTags(List<String> tags) { this.tags = tags; }
         // Getter和Setter
         public String getName() { return name; }
         public void setName(String name) { this.name = name; }

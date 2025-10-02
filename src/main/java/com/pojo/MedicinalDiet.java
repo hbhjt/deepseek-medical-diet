@@ -1,6 +1,7 @@
 package com.pojo;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 业务层药膳实体类（与数据库表对应）
@@ -16,9 +17,23 @@ public class MedicinalDiet {
     private LocalDateTime createTime; // 创建时间
     private Integer isValid;     // 是否有效（1=有效/0=无效）
 
+    // 新增字段
+    private String taboo;        // 禁忌说明
+    private String suitableTime; // 适宜食用时间
+    private List<String> tags;   // 标签列表（用于JSON存储）
+
     // 无参构造
     public MedicinalDiet() {}
 
+    // Getter和Setter（补充新增字段的get/set方法）
+    public String getTaboo() { return taboo; }
+    public void setTaboo(String taboo) { this.taboo = taboo; }
+
+    public String getSuitableTime() { return suitableTime; }
+    public void setSuitableTime(String suitableTime) { this.suitableTime = suitableTime; }
+
+    public List<String> getTags() { return tags; }
+    public void setTags(List<String> tags) { this.tags = tags; }
     // Getter和Setter（完整生成）
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

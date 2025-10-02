@@ -101,16 +101,20 @@ public class MedicinalDietService {
     /**
      * 转换：AI返回的MedicinalDiet → 业务层的MedicinalDiet
      */
+    // 在convertAiDietToBusinessDiet方法中补充新字段映射
     private MedicinalDiet convertAiDietToBusinessDiet(DeepSeekClient.MedicinalDiet aiDiet) {
-        // 验证AI返回结果的关键信息
+        // 验证AI返回结果的关键信息（新增字段校验）
         if (aiDiet == null || !StringUtils.hasText(aiDiet.getName()) ||
-                aiDiet.getSteps() == null || aiDiet.getSteps().isEmpty()) {
+                aiDiet.getSteps() == null || aiDiet.getSteps().isEmpty() ||
+                !StringUtils.hasText(aiDiet.getTaboo()) ||
+                !StringUtils.hasText(aiDiet.getSuitableTime()) ||
+                aiDiet.getTags() == null || aiDiet.getTags().isEmpty()) {
             throw new IllegalArgumentException("AI返回的药膳信息不完整");
         }
 
         MedicinalDiet businessDiet = new MedicinalDiet();
         businessDiet.setName(aiDiet.getName());
-        businessDiet.setEffect(aiDiet.getReason());
+        businessDiet.setEffect(aiDiet.getReason()); // 功效对应AI返回的reason
 
         // 处理步骤，限制长度
         String steps = String.join("\n", aiDiet.getSteps());
@@ -119,6 +123,12 @@ public class MedicinalDietService {
         }
         businessDiet.setMethod(steps);
 
+        // 新增字段映射
+        businessDiet.setTaboo(aiDiet.getTaboo());
+        businessDiet.setSuitableTime(aiDiet.getSuitableTime());
+        businessDiet.setTags(aiDiet.getTags());
+
+        businessDiet.setIsValid(1);
         return businessDiet;
     }
 
